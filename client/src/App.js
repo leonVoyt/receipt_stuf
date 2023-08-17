@@ -24,11 +24,13 @@ const App = () => {
   const [currReciept, setCurrReciept] = useState(0)
   const [currRecieptId, setCurrRecieptId] = useState(0)
   const [reload, setReload] = useState(false)
-  const [active, setActive] = useState(false)
+  const [reciepts, setReciepts] = useState([])
   const total = useTotalPrice(productsInRec)
   const currDate = useDate()
-  console.log(currRecieptId)
 
+  const reloadHandler = () => {
+    setReload(!reload)
+  }
   const closeRecieptHandler = (number, date, total) => {
     closeReciept(number, date, total)
   }
@@ -46,17 +48,21 @@ const App = () => {
     fetchProducts().then((data) => {
       setProducts(data)
     })
+  }, [])
+  useEffect(() => {
     fetchReciept().then((data) => {
+      setReciepts(data)
       setCurrRecieptId(data[data.length - 1].id)
       if (data[data.length - 1].date === null) {
         return data.length && setCurrReciept(data[data.length - 1].number)
       }
       return 0
     })
+  }, [currReciept])
+  useEffect(() => {
     fetchProdInRec().then((data) => {
       setProductsInRec(data)
     })
-    setReload(false)
     function handleClick() {
       setVision(false)
     }
@@ -67,7 +73,9 @@ const App = () => {
     }
   }, [reload])
   return (
-    <Context.Provider value={{ total, productsInRec }}>
+    <Context.Provider
+      value={{ total, productsInRec, currReciept, setCurrReciept }}
+    >
       <div className="main">
         <CreateProductModal vision={vision} />
         <div className="left">
@@ -104,8 +112,8 @@ const App = () => {
                   id={product.id}
                   name={product.name}
                   price={product.price}
-                  click={clickHandler}
-                  reload={setReload}
+                  reciepts={reciepts}
+                  reload={reloadHandler}
                 ></ProductItem>
               ))}
           </div>
@@ -141,7 +149,7 @@ const App = () => {
                     price={el.price}
                     productId={el.productId}
                     key={index}
-                    reload={setReload}
+                    reload={reloadHandler}
                   />
                 ))}
           </div>
@@ -154,7 +162,7 @@ const App = () => {
                   closeRecieptHandler(currReciept, currDate, total)
                   deleteAll(currRecieptId)
                   setCurrReciept(0)
-                  setReload(true)
+                  setReload(!reload)
                 } else {
                   alert('nothink to pay, please select some products in check')
                 }

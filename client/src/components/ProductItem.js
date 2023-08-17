@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { createProdInRec, fetchReciept } from '../http/API'
+import { createProdInRec, createReciept, fetchReciept } from '../http/API'
 import { Context } from '../context/Context'
 
-const ProductItem = ({ name, price, id, click, reload }) => {
-  const { productsInRec } = useContext(Context)
+const ProductItem = ({ name, price, id, reload, reciepts }) => {
+  const { productsInRec, currReciept, setCurrReciept } = useContext(Context)
   const [active, setActive] = useState(false)
 
   useEffect(() => {
@@ -21,14 +21,29 @@ const ProductItem = ({ name, price, id, click, reload }) => {
       className={`product-list__item ${
         active ? 'product-list__item--active' : ''
       }`}
-      onClick={() => {
-        fetchReciept().then((data) => {
-          click(data.length + 1)
-          createProdInRec(price, id, data[data.length - 1].id).then((data) =>
-            reload(true)
-          )
-          setActive(true)
-        })
+      onClick={async () => {
+        if (currReciept === 0) {
+          fetchReciept()
+            .then((data) => {
+              // createProdInRec(price, id, data[data.length - 1].id)
+              setCurrReciept(data.length + 1)
+              setActive(true)
+              return createReciept(data.length + 1, 0)
+            })
+            .then((data) => {
+              console.log(data)
+              createProdInRec(price, id, data.id)
+              reload()
+            })
+          // await createReciept(reciepts.length + 1, 0)
+        } else {
+          await createProdInRec(price, id, reciepts[reciepts.length - 1].id)
+          await setActive(true)
+          await reload()
+        }
+        // fetchReciept().then((data) => {
+
+        // })
       }}
     >
       <p>

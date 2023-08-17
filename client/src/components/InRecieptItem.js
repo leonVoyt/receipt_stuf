@@ -21,10 +21,10 @@ const InRecieptItem = ({ quantity, price, productId, reload }) => {
           className="decrement"
           onClick={() => {
             if (quantity === 1) {
-              return deleteProdInRec(productId).then(() => reload(true))
+              return deleteProdInRec(productId).then(() => reload())
             }
             updateQuantProdInRec(productId, quantity - 1)
-            reload(true)
+            reload()
           }}
         >
           -
@@ -34,7 +34,7 @@ const InRecieptItem = ({ quantity, price, productId, reload }) => {
           className="increment"
           onClick={() => {
             updateQuantProdInRec(productId, quantity + 1)
-            reload(true)
+            reload()
           }}
         >
           +
@@ -45,7 +45,7 @@ const InRecieptItem = ({ quantity, price, productId, reload }) => {
         <button
           className="button-delete--in-reciept"
           onClick={() => {
-            deleteProdInRec(productId).then(() => reload(true))
+            deleteProdInRec(productId).then(() => reload())
           }}
         >
           X
