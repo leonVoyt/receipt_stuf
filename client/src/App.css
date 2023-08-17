@@ -1,0 +1,224 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+html,
+#root {
+  height: 100vh;
+  background-color: lightgray;
+}
+.main {
+  height: 100vh;
+  width: 100vw;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+/* left */
+.left {
+  width: 42%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  height: calc(100vh - 2rem);
+}
+.search {
+  width: 100%;
+}
+.search__input {
+  width: 90%;
+  padding: 0.7rem;
+  border: none;
+  border: 2px solid rgb(158, 156, 156);
+  display: block;
+  margin: 1rem auto;
+}
+.search__line {
+  width: 100%;
+  height: 1px;
+  background-color: lightgray;
+}
+.button {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+}
+.button__create {
+  border: 0;
+  background-color: lightgreen;
+  padding: 1rem;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.button__delete {
+  border: 0;
+  padding: 1rem;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: lightcoral;
+}
+.product-list {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  overflow-y: scroll;
+  align-items: center;
+}
+.product-list h1 {
+  margin: 1rem 0;
+}
+.product-list__item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  border: 2px solid rgb(156, 154, 154);
+  align-items: center;
+  min-height: 60px;
+  background-color: rgb(243, 239, 235);
+  cursor: pointer;
+}
+.product-list__item--active {
+  cursor: default;
+  pointer-events: none;
+  border: 2px solid rgb(73, 196, 69);
+}
+
+/* right */
+.right {
+  width: 56%;
+  background-color: white;
+  height: calc(100vh - 2rem);
+
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+}
+.topBar {
+  display: flex;
+  width: 100%;
+  max-height: 35px;
+  margin-bottom: 1rem;
+}
+
+.recieptName {
+  display: flex;
+  flex: 0 0 44%;
+  justify-content: start;
+}
+.quantity {
+  display: flex;
+  flex: 0 0 28%;
+  justify-content: center;
+}
+.price {
+  display: flex;
+  flex: 0 0 28%;
+  justify-content: center;
+}
+.modal-product {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: calc(100vw - 2rem);
+  height: calc(100vh - 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+}
+.modal-product.modal-product--active {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal-product--inputs {
+  width: 300px;
+  height: 300px;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 1;
+  row-gap: 10px;
+}
+.modal-product--inputs input {
+  width: 80%;
+  padding: 0.4rem;
+}
+.modal-product--inputs button {
+  width: 80%;
+  margin: 1rem 0;
+  padding: 0.4rem;
+  cursor: pointer;
+}
+.modal-product--inputs h1 {
+  margin-bottom: 2rem;
+}
+.reciepts__list {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  overflow-y: scroll;
+  align-items: center;
+  background-color: lightgray;
+  border: 1px solid rgb(74, 69, 69);
+  min-height: 80vh;
+}
+.in-reciept-list__item {
+  display: flex;
+  width: 100%;
+  min-height: 60px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(74, 69, 69);
+}
+.in-reciept-list__item--name {
+  display: flex;
+  flex: 0 0 44%;
+  justify-content: start;
+  align-items: center;
+}
+.in-reciept-list__item--quantity {
+  display: flex;
+  flex: 0 0 28%;
+  justify-content: center;
+  align-items: center;
+}
+
+.in-reciept-list__item--price {
+  display: flex;
+  flex: 0 0 28%;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.close-reciept {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+}
+.close-reciept__button-pay {
+  padding: 0.5rem 1rem;
+}
+.increment,
+.decrement {
+  border: 0;
+  padding: 0.5rem;
+  margin: 0 1rem;
+  cursor: pointer;
+}
+.button-delete--in-reciept {
+  position: absolute;
+  right: 5%;
+  cursor: pointer;
+  padding: 0.5rem;
+}
