@@ -11,8 +11,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4",
-    "homepage": "https://leonVoyt.github.io/receipt_stuf"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "cross-env REACT_APP_API_URL=https://reciept-stuf.onrender.com/ react-scripts start",
