@@ -4,8 +4,23 @@ import { deleteProdInRec, updateQuantProdInRec } from '../http/API'
 const InRecieptItem = ({ quantity, price, productId, reload, products }) => {
   const [name, setName] = useState('')
 
+  const increment = () => {
+    updateQuantProdInRec(productId, quantity + 1)
+    reload()
+  }
+
+  const decrement = () => {
+    if (quantity === 1) {
+      return deleteProdInRec(productId).then(() => reload())
+    }
+    updateQuantProdInRec(productId, quantity - 1)
+    reload()
+  }
+
   useEffect(() => {
-    setName(products.find((el) => el.id === productId).name)
+    if (products.length !== 0) {
+      setName(products.find((el) => el.id === productId).name)
+    }
   }, [])
   return (
     <div className="in-reciept-list__item">
@@ -16,11 +31,7 @@ const InRecieptItem = ({ quantity, price, productId, reload, products }) => {
         <button
           className="decrement"
           onClick={() => {
-            if (quantity === 1) {
-              return deleteProdInRec(productId).then(() => reload())
-            }
-            updateQuantProdInRec(productId, quantity - 1)
-            reload()
+            decrement()
           }}
         >
           -
@@ -29,8 +40,7 @@ const InRecieptItem = ({ quantity, price, productId, reload, products }) => {
         <button
           className="increment"
           onClick={() => {
-            updateQuantProdInRec(productId, quantity + 1)
-            reload()
+            increment()
           }}
         >
           +

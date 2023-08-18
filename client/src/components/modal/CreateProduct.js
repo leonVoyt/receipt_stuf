@@ -1,15 +1,28 @@
 import React, { useState } from 'react'
-import { createProduct, deleteProduct } from '../../http/API'
+import { createProduct, deleteProduct, fetchProducts } from '../../http/API'
 
-const CreateProductModal = ({ vision, type }) => {
+const CreateProductModal = ({
+  vision,
+  type,
+  reload,
+  products,
+  setProducts,
+  setVision,
+}) => {
   const [name, setName] = useState('')
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState('')
 
   const createPr = (name, price) => {
-    createProduct(name, price)
+    createProduct(name, price).then((data) =>
+      fetchProducts().then((data) => setProducts(data))
+    )
+    setVision(!vision)
   }
   const deletePr = (id) => {
-    deleteProduct(id)
+    deleteProduct(id).then(() =>
+      fetchProducts().then((data) => setProducts(data))
+    )
+    setVision(!vision)
   }
   return (
     <div className={`modal-product ${vision ? 'modal-product--active' : ''}`}>
@@ -33,9 +46,26 @@ const CreateProductModal = ({ vision, type }) => {
           ''
         )}
         {type === 'delete' ? (
-          <button onClick={() => deletePr(name)}>Delete from list</button>
+          <button
+            onClick={() => {
+              deletePr(name)
+              reload()
+              setName('')
+            }}
+          >
+            Delete from list
+          </button>
         ) : (
-          <button onClick={() => createPr(name, price)}>Add to list</button>
+          <button
+            onClick={() => {
+              createPr(name, price)
+              reload()
+              setName('')
+              setPrice('')
+            }}
+          >
+            Add to list
+          </button>
         )}
       </div>
     </div>

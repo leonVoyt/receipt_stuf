@@ -36,9 +36,10 @@ const ProductItem = ({ name, price, id, reload, reciepts }) => {
               return createReciept(data.length + 1, 0)
             })
             .then((data) => {
-              createProdInRec(price, id, data.id)
-              reload()
-              setReciepLoad(!reciepLoad)
+              createProdInRec(price, id, data.id).then(() => {
+                reload()
+                setReciepLoad(!reciepLoad)
+              })
             })
         } else {
           await createProdInRec(price, id, reciepts[reciepts.length - 1].id)
