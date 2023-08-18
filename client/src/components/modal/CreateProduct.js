@@ -33,12 +33,14 @@ const CreateProductModal = ({
         <h1>{type === 'delete' ? 'Delete' : 'Add'} product</h1>
         <input
           type="text"
+          value={name}
           placeholder={type === 'delete' ? 'id' : 'name'}
           onChange={(e) => setName(e.target.value)}
         />
         {type !== 'delete' ? (
           <input
             type="text"
+            value={price}
             placeholder="price"
             onChange={(e) => setPrice(e.target.value)}
           />
