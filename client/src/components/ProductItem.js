@@ -25,7 +25,6 @@ const ProductItem = ({ name, price, id, reload, reciepts }) => {
         if (currReciept === 0) {
           fetchReciept()
             .then((data) => {
-              // createProdInRec(price, id, data[data.length - 1].id)
               setCurrReciept(data.length + 1)
               setActive(true)
               return createReciept(data.length + 1, 0)
@@ -35,15 +34,11 @@ const ProductItem = ({ name, price, id, reload, reciepts }) => {
               createProdInRec(price, id, data.id)
               reload()
             })
-          // await createReciept(reciepts.length + 1, 0)
         } else {
           await createProdInRec(price, id, reciepts[reciepts.length - 1].id)
           await setActive(true)
           await reload()
         }
-        // fetchReciept().then((data) => {
-
-        // })
       }}
     >
       <p>

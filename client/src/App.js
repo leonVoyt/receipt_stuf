@@ -37,18 +37,13 @@ const App = () => {
   const deletePr = () => {
     deleteProduct(22)
   }
-  const clickHandler = (number, total = 0) => {
-    if (currReciept === 0) {
-      createReciept(number, total).then((data) => {
-        setCurrReciept(data.number)
-      })
-    }
-  }
+
   useEffect(() => {
     fetchProducts().then((data) => {
       setProducts(data)
     })
   }, [])
+
   useEffect(() => {
     fetchReciept().then((data) => {
       setReciepts(data)
@@ -58,8 +53,6 @@ const App = () => {
       }
       return 0
     })
-  }, [currReciept])
-  useEffect(() => {
     fetchProdInRec().then((data) => {
       setProductsInRec(data)
     })
@@ -150,6 +143,7 @@ const App = () => {
                     productId={el.productId}
                     key={index}
                     reload={reloadHandler}
+                    products={products}
                   />
                 ))}
           </div>
@@ -160,9 +154,10 @@ const App = () => {
               onClick={() => {
                 if (currReciept !== 0) {
                   closeRecieptHandler(currReciept, currDate, total)
-                  deleteAll(currRecieptId)
-                  setCurrReciept(0)
-                  setReload(!reload)
+                  deleteAll(currRecieptId).then(() => {
+                    setCurrReciept(0)
+                    setReload(!reload)
+                  })
                 } else {
                   alert('nothink to pay, please select some products in check')
                 }

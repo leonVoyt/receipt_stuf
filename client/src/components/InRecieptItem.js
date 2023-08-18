@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import {
-  deleteProdInRec,
-  fetchOneProduct,
-  updateQuantProdInRec,
-} from '../http/API'
+import { deleteProdInRec, updateQuantProdInRec } from '../http/API'
 
-const InRecieptItem = ({ quantity, price, productId, reload }) => {
+const InRecieptItem = ({ quantity, price, productId, reload, products }) => {
   const [name, setName] = useState('')
 
   useEffect(() => {
-    fetchOneProduct(productId).then((data) => setName(data.name))
+    setName(products.find((el) => el.id === productId).name)
   }, [])
   return (
     <div className="in-reciept-list__item">
