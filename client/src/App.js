@@ -69,8 +69,8 @@ const App = () => {
   useEffect(() => {
     fetchProdInRec().then(async (data) => {
       await setProductsInRec(data)
+      console.log(data[0])
     })
-    console.log('fetchProdInRec')
   }, [reload])
   return (
     <Context.Provider

@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { deleteProdInRec, updateQuantProdInRec } from '../http/API'
+import {
+  deleteProdInRec,
+  fetchProdInRec,
+  updateQuantProdInRec,
+} from '../http/API'
 
 const InRecieptItem = ({ quantity, price, productId, reload, products }) => {
   const [name, setName] = useState('')
 
   const increment = () => {
-    updateQuantProdInRec(productId, quantity + 1)
-    reload()
+    updateQuantProdInRec(productId, quantity + 1).finally(() => reload())
   }
 
   const decrement = () => {
     if (quantity === 1) {
-      return deleteProdInRec(productId).then(() => reload())
+      return deleteProdInRec(productId)
     }
-    updateQuantProdInRec(productId, quantity - 1)
-    reload()
+    updateQuantProdInRec(productId, quantity - 1).finally(() => reload())
   }
 
   useEffect(() => {

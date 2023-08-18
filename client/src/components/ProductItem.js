@@ -27,12 +27,12 @@ const ProductItem = ({ name, price, id, reload, reciepts }) => {
       className={`product-list__item ${
         active ? 'product-list__item--active' : ''
       }`}
-      onClick={async () => {
+      onClick={() => {
+        setActive(true)
         if (currReciept === 0) {
           fetchReciept()
             .then((data) => {
               setCurrReciept(data.length + 1)
-              setActive(true)
               return createReciept(data.length + 1, 0)
             })
             .then((data) => {
@@ -42,9 +42,12 @@ const ProductItem = ({ name, price, id, reload, reciepts }) => {
               })
             })
         } else {
-          await createProdInRec(price, id, reciepts[reciepts.length - 1].id)
-          await setActive(true)
-          await reload()
+          createProdInRec(price, id, reciepts[reciepts.length - 1].id).then(
+            () => {
+              setActive(true)
+              reload()
+            }
+          )
         }
       }}
     >
