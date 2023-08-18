@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  deleteProdInRec,
-  fetchProdInRec,
-  updateQuantProdInRec,
-} from '../http/API'
+import { deleteProdInRec, updateQuantProdInRec } from '../http/API'
 
 const InRecieptItem = ({ quantity, price, productId, reload, products }) => {
   const [name, setName] = useState('')

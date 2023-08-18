@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './App.css'
 import {
   closeReciept,
-  createReciept,
   deleteAll,
-  deleteProdInRec,
-  deleteProduct,
   fetchProdInRec,
   fetchProducts,
   fetchReciept,
@@ -70,9 +67,9 @@ const App = () => {
   useEffect(() => {
     fetchProdInRec().then(async (data) => {
       await setProductsInRec(data)
-      console.log(data[0])
     })
   }, [reload])
+
   return (
     <Context.Provider
       value={{
