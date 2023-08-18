@@ -20,15 +20,7 @@ class ProductController {
       next(ApiError.badRequest(error.message))
     }
   }
-  async getOne(req, res, next) {
-    const { id } = req.params
-    try {
-      const product = await Product.findOne({ where: { id } })
-      return res.json(product)
-    } catch (error) {
-      next(ApiError.badRequest(error.message))
-    }
-  }
+
   async delete(req, res, next) {
     try {
       const { id } = req.params

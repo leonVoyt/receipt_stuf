@@ -29,14 +29,6 @@ class RecieptController {
       next(ApiError.badRequest(error.message))
     }
   }
-  async deleteUnPayed(req, res, next) {
-    try {
-      const user = await Reciept.destroy({ where: { date: null } })
-      res.json(user)
-    } catch (error) {
-      next(ApiError.badRequest(error.message))
-    }
-  }
 
   async updateOne(req, res, next) {
     try {

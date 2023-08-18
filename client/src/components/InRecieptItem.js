@@ -10,7 +10,7 @@ const InRecieptItem = ({ quantity, price, productId, reload, products }) => {
 
   const decrement = () => {
     if (quantity === 1) {
-      return deleteProdInRec(productId)
+      return deleteProdInRec(productId).then(() => reload())
     }
     updateQuantProdInRec(productId, quantity - 1).finally(() => reload())
   }

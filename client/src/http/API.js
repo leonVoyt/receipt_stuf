@@ -9,10 +9,7 @@ export const fetchProducts = async () => {
   const { data } = await $host.get('api/product')
   return data
 }
-export const fetchOneProduct = async (id) => {
-  const { data } = await $host.get('api/product/' + id)
-  return data
-}
+
 export const deleteProduct = async (id) => {
   const { data } = await $host.delete('api/product/delete/' + id)
   return data
@@ -24,10 +21,6 @@ export const createReciept = async (number, total) => {
 }
 export const fetchReciept = async () => {
   const { data } = await $host.get('api/reciept')
-  return data
-}
-export const deleteReciept = async (id) => {
-  const { data } = await $host.delete('api/reciept/deleteUnPayed/')
   return data
 }
 
