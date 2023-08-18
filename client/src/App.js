@@ -11,22 +11,25 @@ import {
   fetchReciept,
 } from './http/API'
 import ProductItem from './components/ProductItem'
-import CreateProductModal from './modal/CreateProduct'
 import InRecieptItem from './components/InRecieptItem'
 import { Context } from './context/Context'
 import { useTotalPrice } from './hooks/useTotalPrice'
 import { useDate } from './hooks/useDate'
+import CreateProductModal from './components/modal/CreateProduct'
 
 const App = () => {
   const [products, setProducts] = useState([])
   const [productsInRec, setProductsInRec] = useState([])
+  const [reciepts, setReciepts] = useState([])
   const [vision, setVision] = useState(false)
   const [currReciept, setCurrReciept] = useState(0)
   const [currRecieptId, setCurrRecieptId] = useState(0)
   const [reload, setReload] = useState(false)
-  const [reciepts, setReciepts] = useState([])
+  const [reciepLoad, setReciepLoad] = useState(false)
+  const [modalType, setModalType] = useState('')
   const total = useTotalPrice(productsInRec)
   const currDate = useDate()
+  console.log(process.env.REACT_APP_API_URL)
 
   const reloadHandler = () => {
     setReload(!reload)
@@ -34,14 +37,19 @@ const App = () => {
   const closeRecieptHandler = (number, date, total) => {
     closeReciept(number, date, total)
   }
-  const deletePr = () => {
-    deleteProduct(22)
-  }
 
   useEffect(() => {
     fetchProducts().then((data) => {
       setProducts(data)
     })
+    function handleClick() {
+      setVision(false)
+    }
+    window.addEventListener('click', handleClick)
+
+    return () => {
+      window.removeEventListener('click', handleClick)
+    }
   }, [])
 
   useEffect(() => {
@@ -53,24 +61,26 @@ const App = () => {
       }
       return 0
     })
+  }, [reciepLoad])
+
+  useEffect(() => {
     fetchProdInRec().then((data) => {
       setProductsInRec(data)
     })
-    function handleClick() {
-      setVision(false)
-    }
-    window.addEventListener('click', handleClick)
-
-    return () => {
-      window.removeEventListener('click', handleClick)
-    }
   }, [reload])
   return (
     <Context.Provider
-      value={{ total, productsInRec, currReciept, setCurrReciept }}
+      value={{
+        total,
+        productsInRec,
+        currReciept,
+        setCurrReciept,
+        setReciepLoad,
+        reciepLoad,
+      }}
     >
       <div className="main">
-        <CreateProductModal vision={vision} />
+        <CreateProductModal vision={vision} type={modalType} />
         <div className="left">
           <div className="search">
             <input type="text" className="search__input" />
@@ -81,8 +91,8 @@ const App = () => {
               className="button__create"
               onClick={(e) => {
                 setVision(true)
-                console.log(vision)
                 e.stopPropagation()
+                setModalType('')
               }}
             >
               add product
@@ -90,12 +100,15 @@ const App = () => {
             <button
               className="button__delete"
               onClick={(e) => {
-                deletePr(22)
+                setVision(true)
+                e.stopPropagation()
+                setModalType('delete')
               }}
             >
               delete product
             </button>
           </div>
+
           <div className="product-list">
             <h1>Menu</h1>
             {products.length &&
@@ -111,10 +124,13 @@ const App = () => {
               ))}
           </div>
         </div>
-        <div className="right">
+
+        <div className={`right ${currReciept === 0 ? '' : 'right--active'}`}>
+          <h2>Check #{currReciept !== 0 ? currReciept : ''}</h2>
+          <hr />
           <div className="topBar">
             <div className="recieptName">
-              <h2>Check #{currReciept !== 0 ? currReciept : ''}</h2>
+              <h2>Name</h2>
             </div>
             <div className="quantity">
               <h2>quantity</h2>
@@ -124,31 +140,33 @@ const App = () => {
             </div>
           </div>
           <div className="reciepts__list">
-            {productsInRec.length &&
-              productsInRec
-                .sort(function (a, b) {
-                  if (a.createdAt > b.createdAt) {
-                    return 1
-                  }
-                  if (a.createdAt < b.createdAt) {
-                    return -1
-                  }
-                  // a должно быть равным b
-                  return 0
-                })
-                .map((el, index) => (
-                  <InRecieptItem
-                    quantity={el.quantity}
-                    price={el.price}
-                    productId={el.productId}
-                    key={index}
-                    reload={reloadHandler}
-                    products={products}
-                  />
-                ))}
+            {productsInRec.length
+              ? productsInRec
+                  .sort(function (a, b) {
+                    if (a.createdAt > b.createdAt) {
+                      return 1
+                    }
+                    if (a.createdAt < b.createdAt) {
+                      return -1
+                    }
+                    // a должно быть равным b
+                    return 0
+                  })
+                  .map((el, index) => (
+                    <InRecieptItem
+                      quantity={el.quantity}
+                      price={el.price}
+                      productId={el.productId}
+                      key={index}
+                      reload={reloadHandler}
+                      products={products}
+                    />
+                  ))
+              : ''}
           </div>
           <div className="close-reciept">
-            <p>total {total} </p>
+            <p>total {total} ₴</p>
+
             <button
               className="close-reciept__button-pay"
               onClick={() => {

@@ -3,7 +3,13 @@ import { createProdInRec, createReciept, fetchReciept } from '../http/API'
 import { Context } from '../context/Context'
 
 const ProductItem = ({ name, price, id, reload, reciepts }) => {
-  const { productsInRec, currReciept, setCurrReciept } = useContext(Context)
+  const {
+    productsInRec,
+    currReciept,
+    setCurrReciept,
+    setReciepLoad,
+    reciepLoad,
+  } = useContext(Context)
   const [active, setActive] = useState(false)
 
   useEffect(() => {
@@ -30,9 +36,9 @@ const ProductItem = ({ name, price, id, reload, reciepts }) => {
               return createReciept(data.length + 1, 0)
             })
             .then((data) => {
-              console.log(data)
               createProdInRec(price, id, data.id)
               reload()
+              setReciepLoad(!reciepLoad)
             })
         } else {
           await createProdInRec(price, id, reciepts[reciepts.length - 1].id)
