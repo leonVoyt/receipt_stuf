@@ -41,10 +41,11 @@ const App = () => {
   }
 
   useEffect(() => {
-    fetchProducts().then((data) => {
-      setProducts(data)
-      setPageLoaded(true)
-    })
+    fetchProducts()
+      .then((data) => {
+        setProducts(data)
+      })
+      .then(() => setPageLoaded(true))
     function handleClick() {
       setVision(false)
     }
